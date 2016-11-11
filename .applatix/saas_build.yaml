@@ -1,0 +1,131 @@
+---
+type: service_template
+subtype: container
+name: saas-build-base
+description: This is the base template for building SaaS component.
+container:
+  resources:
+    mem_mib: 750
+    cpu_cores: 0.3
+  image: get.applatix.io/axdb-dev:v1.7
+  docker_options: 
+  command: sh -c 'docker login -u axuser -p VR/fZvoC0nA0 get.applatix.io 
+       && /src/build/build_saas.py -bl -n %%namespace%% -v %%version%% -s %%service%%'
+inputs:
+  artifacts:
+  - from: "%%service.checkout.code%%"
+    path: "/src"
+  parameters:
+    checkout:
+    namespace:
+    version:
+    service:
+outputs:
+labels:
+    "ax_ea_docker_enable": "{ \"graph-storage-name\": \"saasbuildstorage\", \"graph-storage-size\": \"30Gi\" }"
+
+---
+type: service_template
+subtype: container
+name: saas-release-base
+description: This is the base template for building SaaS component.
+container:
+  resources:
+    mem_mib: 750
+    cpu_cores: 0.3
+  image: get.applatix.io/axdb-dev:v1.7
+  docker_options:
+  command: sh -c 'docker login -u axuser -p VR/fZvoC0nA0 get.applatix.io
+       && /src/build/build_saas.py -bl -n %%namespace%% -s %%service%%'
+inputs:
+  artifacts:
+  - from: "%%service.checkout.code%%"
+    path: "/src"
+  parameters:
+    checkout:
+    namespace:
+    service:
+outputs:
+labels:
+    "ax_ea_docker_enable": "{ \"graph-storage-name\": \"saasbuildstorage\", \"graph-storage-size\": \"30Gi\" }"
+
+---
+type: service_template
+subtype: workflow
+name: saas-build-step
+description: This is the workflow step for building all SaaS components.
+inputs:
+  parameters:
+    checkout:
+    namespace:
+    version:
+steps:
+  - axdb:
+      template: saas-build-base
+      parameters:
+        service: axdb
+    axops:
+      template: saas-build-base
+      parameters:
+        service: axops
+    kafka:
+        template: saas-build-base
+        parameters:
+          service: kafka
+    zookeeper:
+        template: saas-build-base
+        parameters:
+          service: zookeeper
+
+---
+type: service_template
+subtype: workflow
+name: saas-release-step
+description: This is the workflow step for building all SaaS components.
+inputs:
+  parameters:
+    checkout:
+    namespace:
+steps:
+  - axdb:
+      template: saas-release-base
+      parameters:
+        service: axdb
+    axops:
+      template: saas-release-base
+      parameters:
+        service: axops
+    kafka:
+        template: saas-release-base
+        parameters:
+          service: kafka
+    zookeeper:
+        template: saas-release-base
+        parameters:
+          service: zookeeper
+
+---
+type: service_template
+subtype: workflow
+name: saas-build-standalone
+description: This is the workflow for building all SaaS components.
+inputs:
+  parameters:
+    commit:
+      default: "%%session.commit%%"
+    repo:
+      default: "%%session.repo%%"
+    namespace:
+      default: axsys
+    version:
+      default: staging
+steps:
+  - checkout:
+      template: axscm-checkout
+  - saas-build:
+      template: saas-build-step
+      parameters:
+        checkout: "%%step.checkout%%"
+labels:
+  key1: val1
+  key2: val2

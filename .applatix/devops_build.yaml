@@ -1,0 +1,76 @@
+---
+type: service_template
+subtype: container
+name: devops-build-step
+description: This is the base template for building DevOps component.
+container:
+  resources:
+    mem_mib: 1024
+    cpu_cores: 0.3
+  image: get.applatix.io/prod/axbuild2:latest
+  docker_options:
+  command: sh -c 'docker login -u axuser -p VR/fZvoC0nA0 get.applatix.io 
+    && /src/build/build_devops.py -n %%namespace%% -v %%version%%'
+inputs:
+  parameters:
+    namespace:
+    version:
+  artifacts:
+  - from: "%%service.checkout.code%%"
+    path: "/src"
+  parameters:
+    checkout:
+    namespace:
+    version:
+outputs:
+labels:
+    "ax_ea_docker_enable": "{ \"graph-storage-name\": \"devopsbuildstorage\", \"graph-storage-size\": \"30Gi\" }"
+
+---
+type: service_template
+subtype: container
+name: devops-release-step
+description: This is the base template for building DevOps component.
+container:
+  resources:
+    mem_mib: 1024
+    cpu_cores: 0.3
+  image: get.applatix.io/prod/axbuild2:latest
+  docker_options:
+  command: sh -c 'docker login -u axuser -p VR/fZvoC0nA0 get.applatix.io
+    && /src/build/build_devops.py -n %%namespace%%'
+inputs:
+  parameters:
+    namespace:
+  artifacts:
+  - from: "%%service.checkout.code%%"
+    path: "/src"
+  parameters:
+    checkout:
+    namespace:
+outputs:
+labels:
+    "ax_ea_docker_enable": "{ \"graph-storage-name\": \"devopsbuildstorage\", \"graph-storage-size\": \"30Gi\" }"
+
+---
+type: service_template
+subtype: workflow
+name: devops-build-standalone
+description: This is the workflow for building all DevOps components.
+inputs:
+  parameters:
+    commit:
+      default: "%%session.commit%%"
+    repo:
+      default: "%%session.repo%%"
+    namespace:
+      default: axsys
+    version:
+      default: staging
+steps:
+  - checkout:
+      template: axscm-checkout
+  - devops-build:
+      template: devops-build-step
+      parameters:
+        checkout: "%%step.checkout%%"

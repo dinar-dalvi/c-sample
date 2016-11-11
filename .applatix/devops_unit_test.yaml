@@ -1,0 +1,83 @@
+---
+type: service_template
+subtype: container
+name: devops-unit-test-base
+description: This is the base template for DevOps unit tests.
+container:
+  resources:
+    mem_mib: 128
+    cpu_cores: 0.1
+  image: get.applatix.io/axdevopsbuilder:v2
+  docker_options: "-e PYTHONPATH=/src/common/python"
+  command: "%%CMD%%"
+inputs:
+  artifacts:
+  - from: "%%service.checkout.code%%"
+    path: "/src"
+  parameters:
+    CMD:
+    checkout:
+outputs:
+
+---
+type: service_template
+subtype: workflow
+name: devops-unit-test-step
+description: This is the workflow step for running all DevOps unit tests.
+inputs:
+  parameters:
+    checkout:
+steps:
+  - workflow-executor-test:
+      template: devops-unit-test-base
+      parameters:
+        CMD: pytest -vv --maxfail=5 /src/devops/test/ax/test/devops/e2e/executor
+    scm-test:
+      template: devops-unit-test-base
+      parameters:
+        CMD: sh -c 'git config --global user.email "axuser@applatix-auto" &&
+                    git config --global user.name "axuser" &&
+                    pytest -vv --maxfail=5 /src/devops/test/ax/test/devops/unit/scm'
+    fixturemanager-test:
+      template: fixturemanager-test-step
+
+---
+type: service_template
+subtype: container
+name: mongodb
+description: MongoDB container
+container:
+  image: mongo:3.2.9
+  resources:
+    mem_mib: 128
+    cpu_cores: 0.1
+
+---
+type: service_template
+subtype: container
+name: redis
+description: Redis container
+container:
+  image: redis:3.0.5
+  resources:
+    mem_mib: 128
+    cpu_cores: 0.1
+
+---
+type: service_template
+subtype: workflow
+name: fixturemanager-test-step
+description: Test step for fixturemanager
+inputs:
+  parameters:
+    checkout:
+fixtures:
+  - mongodb:
+      template: mongodb
+    redisdb:
+      template: redis
+steps:
+  - fixturemanager-test-exec:
+     template: devops-unit-test-base
+     parameters:
+        CMD: pytest -vv --maxfail=5 /src/devops/test/ax/test/devops/unit/fixture --redis %%fixtures.redisdb.ip%% --mongodb %%fixtures.mongodb.ip%%

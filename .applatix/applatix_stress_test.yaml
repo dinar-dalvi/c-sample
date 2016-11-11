@@ -1,0 +1,308 @@
+---
+type: policy
+name: "Applaix Stress Every 20 minutes #1"
+description: Trigger build every 20 minutes
+template: Applatix CI
+parameters:
+  namespace: "stresstest"
+  version: "test1"
+notifications:
+  -
+    when:
+      - on_change
+    whom:
+      - author
+when:
+  -
+    event: on_cron
+    target_branches:
+      - ".*"
+    schedule: "*/20 * * * *"
+    timezone: "US/Pacific"
+
+---
+type: policy
+name: "Applaix Stress Every 20 minutes #2"
+description: Trigger build every 20 minutes
+template: Applatix CI
+parameters:
+  namespace: "stresstest"
+  version: "test1"
+notifications:
+  -
+    when:
+      - on_change
+    whom:
+      - author
+when:
+  -
+    event: on_cron
+    target_branches:
+      - ".*"
+    schedule: "*/20 * * * *"
+    timezone: "US/Pacific"
+
+---
+type: policy
+name: "Applaix Stress Every 20 minutes #3"
+description: Trigger build every 20 minutes
+template: Applatix CI
+parameters:
+  namespace: "stresstest"
+  version: "test1"
+notifications:
+  -
+    when:
+      - on_change
+    whom:
+      - author
+when:
+  -
+    event: on_cron
+    target_branches:
+      - ".*"
+    schedule: "*/20 * * * *"
+    timezone: "US/Pacific"
+
+---
+type: policy
+name: "Applaix Stress Every 20 minutes #4"
+description: Trigger build every 20 minutes
+template: Applatix CI
+parameters:
+  namespace: "stresstest"
+  version: "test1"
+notifications:
+  -
+    when:
+      - on_change
+    whom:
+      - author
+when:
+  -
+    event: on_cron
+    target_branches:
+      - ".*"
+    schedule: "*/20 * * * *"
+    timezone: "US/Pacific"
+
+---
+type: policy
+name: "Applaix Stress Every 20 minutes #5"
+description: Trigger build every 20 minutes
+template: Applatix CI
+parameters:
+  namespace: "stresstest"
+  version: "test1"
+notifications:
+  -
+    when:
+      - on_change
+    whom:
+      - author
+when:
+  -
+    event: on_cron
+    target_branches:
+      - ".*"
+    schedule: "*/20 * * * *"
+    timezone: "US/Pacific"
+
+
+---
+type: policy
+name: Applaix Stress Every 30 minutes
+description: Trigger build every 30 minutes
+template: Applatix CI
+parameters:
+  namespace: "stresstest"
+  version: "test1"
+notifications:
+  -
+    when:
+      - on_change
+    whom:
+      - author
+when:
+  -
+    event: on_cron
+    target_branches:
+      - ".*"
+    schedule: "*/30 * * * *"
+    timezone: "US/Pacific"
+
+---
+type: policy
+name: Applaix Stress Every 10 minutes
+description: Trigger build every 10 minutes
+template: Applatix CI
+parameters:
+  namespace: "stresstest"
+  version: "test1"
+notifications:
+  -
+    when:
+      - on_change
+    whom:
+      - author
+when:
+  -
+    event: on_cron
+    target_branches:
+      - ".*"
+    schedule: "*/10 * * * *"
+    timezone: "US/Pacific"
+
+---
+type: policy
+name: "Applaix Stress Every 5 minutes #1"
+description: Trigger build every 5 minutes
+template: Applatix CI
+parameters:
+  namespace: "stresstest"
+  version: "test1"
+notifications:
+  -
+    when:
+      - on_change
+    whom:
+      - author
+when:
+  -
+    event: on_cron
+    target_branches:
+      - ".*"
+    schedule: "*/5 * * * *"
+    timezone: "US/Pacific"
+
+---
+type: policy
+name: "Applaix Stress Every 5 minutes #2"
+description: Trigger build every 5 minutes
+template: Applatix CI
+parameters:
+  namespace: "stresstest"
+  version: "test1"
+notifications:
+  -
+    when:
+      - on_change
+    whom:
+      - author
+when:
+  -
+    event: on_cron
+    target_branches:
+      - ".*"
+    schedule: "*/5 * * * *"
+    timezone: "US/Pacific"
+
+---
+type: policy
+name: "Applaix Stress Every 5 minutes #3"
+description: Trigger build every 5 minutes
+template: Applatix CI
+parameters:
+  namespace: "stresstest"
+  version: "test1"
+notifications:
+  -
+    when:
+      - on_change
+    whom:
+      - author
+when:
+  -
+    event: on_cron
+    target_branches:
+      - ".*"
+    schedule: "*/5 * * * *"
+    timezone: "US/Pacific"
+
+---
+type: policy
+name: "Applaix Stress Every 5 minutes #4"
+description: Trigger build every 5 minutes
+template: Applatix CI
+parameters:
+  namespace: "stresstest"
+  version: "test1"
+notifications:
+  -
+    when:
+      - on_change
+    whom:
+      - author
+when:
+  -
+    event: on_cron
+    target_branches:
+      - ".*"
+    schedule: "*/5 * * * *"
+    timezone: "US/Pacific"
+
+---
+type: policy
+name: "Applaix Stress Every 5 minutes #5"
+description: Trigger build every 5 minutes
+template: Applatix CI
+parameters:
+  namespace: "stresstest"
+  version: "test1"
+notifications:
+  -
+    when:
+      - on_change
+    whom:
+      - author
+when:
+  -
+    event: on_cron
+    target_branches:
+      - ".*"
+    schedule: "*/5 * * * *"
+    timezone: "US/Pacific"
+
+---
+type: policy
+name: "Applaix Stress Every 1 minutes #1"
+description: Trigger build every 1 minutes
+template: Applatix CI
+parameters:
+  namespace: "stresstest"
+  version: "test1"
+notifications:
+  -
+    when:
+      - on_change
+    whom:
+      - author
+when:
+  -
+    event: on_cron
+    target_branches:
+      - ".*"
+    schedule: "*/1 * * * *"
+    timezone: "US/Pacific"
+
+---
+type: policy
+name: "Applaix Stress Every 1 minutes #2"
+description: Trigger build every 1 minutes
+template: Applatix CI
+parameters:
+  namespace: "stresstest"
+  version: "test1"
+notifications:
+  -
+    when:
+      - on_change
+    whom:
+      - author
+when:
+  -
+    event: on_cron
+    target_branches:
+      - ".*"
+    schedule: "*/1 * * * *"
+    timezone: "US/Pacific"

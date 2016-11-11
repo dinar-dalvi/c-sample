@@ -1,0 +1,71 @@
+---
+type: service_template
+subtype: container
+name: chaos-monkey-build-step
+description: This is the base template for building Chaos Monkey component.
+container:
+  resources:
+    mem_mib: 512
+    cpu_cores: 0.3
+  image: get.applatix.io/prod/axbuild2:latest
+  docker_options:
+  command: sh -c 'docker login -u axuser -p VR/fZvoC0nA0 get.applatix.io
+    && /src/build/build_devops.py -n %%namespace%% -v %%version%% -s chaosmonkey'
+inputs:
+  parameters:
+    namespace:
+    version:
+  artifacts:
+  - from: "%%service.checkout.code%%"
+    path: "/src"
+  parameters:
+    checkout:
+    namespace:
+    version:
+outputs:
+labels:
+    "ax_ea_docker_enable": "{ \"graph-storage-name\": \"devopsbuildstorage\", \"graph-storage-size\": \"30Gi\" }"
+
+
+---
+type: service_template
+subtype: container
+name: chaosmonkey-run-step
+description: Base step for chaos monkey container.
+container:
+  resources:
+    mem_mib: 512
+    cpu_cores: 0.1
+  image: get.applatix.io/%%namespace%%/chaosmonkey:%%version%%
+  command: sh -c 'chaosmonkey'
+inputs:
+  parameters:
+    namespace:
+    version:
+outputs:
+
+
+---
+type: service_template
+subtype: workflow
+name: Chaos Monkey Test
+description: Be careful what you wish for.
+inputs:
+  parameters:
+    commit:
+      default: "%%session.commit%%"
+    repo:
+      default: "%%session.repo%%"
+    namespace:
+      default: axsys
+    version:
+      default: staging
+steps:
+  - checkout:
+      template: axscm-checkout
+  - chaos-monkey-build:
+      template: chaos-monkey-build-step
+      parameters:
+        checkout: "%%step.checkout%%"
+  - chaos-monkey:
+      template: chaosmonkey-run-step

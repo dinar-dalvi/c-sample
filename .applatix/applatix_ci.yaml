@@ -1,0 +1,87 @@
+---
+type: service_template
+subtype: workflow
+name: Applatix CI
+description: This is the workflow for building all applatix components.
+inputs:
+  parameters:
+    commit:
+      default: "%%session.commit%%"
+    repo:
+      default: "%%session.repo%%"
+    namespace:
+      default: axsys
+    version:
+      default: staging
+steps:
+  - checkout:
+      template: axscm-checkout
+  - sass-test:
+      template: saas-unit-test-step
+      parameters:
+        checkout: "%%step.checkout%%"
+    devops-test:
+      template: devops-unit-test-step
+      parameters:
+        checkout: "%%step.checkout%%"
+  - platform-build:
+      template: platform-build-step
+      parameters:
+        checkout: "%%step.checkout%%"
+    devops-build:
+      template: devops-build-step
+      parameters:
+        checkout: "%%step.checkout%%"
+    saas-build:
+      template: saas-build-step
+      parameters:
+        checkout: "%%step.checkout%%"
+labels:
+  release: development
+  milestone: m6
+
+---
+type: policy
+name: Applaix Build Policy
+description: Policy to trigger build for all events
+template: Applatix CI
+parameters:
+  namespace: "axsys"
+  version: "staging"
+notifications:
+  -
+    when:
+      - on_start
+      - on_success
+      - on_failure
+    whom:
+      - committer
+      - author
+  -
+    when:
+      - on_change
+    whom:
+      - j7l5a4s7j9c5t9m3@applatix.slack.com
+when:
+  -
+    event: on_push
+    target_branches:
+      - ".*"
+  -
+    event: on_pull_request
+    target_branches:
+      - ".*"
+  -
+    event: on_pull_request_merge
+    target_branches:
+      - ".*"
+  -
+    event: on_cron
+    target_branches:
+      - ".*"
+    schedule: "0 */2 * * *"
+    timezone: "US/Pacific"
+labels:
+  k1: v11
+  k2: v22
+  k3: v33

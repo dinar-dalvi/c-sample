@@ -1,0 +1,93 @@
+---
+type: service_template
+subtype: container
+name: platform-build-step
+description: This is the base template for building platform component.
+container:
+  resources:
+    mem_mib: 1024
+    cpu_cores: 0.3
+  image: get.applatix.io/prod/axbuild2:latest
+  docker_options:
+  command: sh -c 'docker login -u axuser -p VR/fZvoC0nA0 get.applatix.io 
+    && /src/build/build_platform.py -n %%namespace%% -v %%version%%'
+inputs:
+  artifacts:
+  - from: "%%service.checkout.code%%"
+    path: "/src"
+  parameters:
+    checkout:
+    namespace:
+    version:
+outputs:
+labels:
+    "ax_ea_docker_enable": "{ \"graph-storage-name\": \"platformbuildstorage\", \"graph-storage-size\": \"30Gi\" }"
+
+---
+type: service_template
+subtype: container
+name: platform-release-step
+description: This is the base template for building platform component.
+container:
+  resources:
+    mem_mib: 1024
+    cpu_cores: 0.3
+  image: get.applatix.io/prod/axbuild2:latest
+  docker_options:
+  command: sh -c 'docker login -u axuser -p VR/fZvoC0nA0 get.applatix.io
+    && /src/build/build_platform.py -n %%namespace%%'
+inputs:
+  artifacts:
+  - from: "%%service.checkout.code%%"
+    path: "/src"
+  parameters:
+    checkout:
+    namespace:
+outputs:
+labels:
+    "ax_ea_docker_enable": "{ \"graph-storage-name\": \"platformbuildstorage\", \"graph-storage-size\": \"30Gi\" }"
+
+---
+type: service_template
+subtype: workflow
+name: platform-build-standalone
+description: This is the workflow for building all Platform components.
+inputs:
+  parameters:
+    commit:
+      default: "%%session.commit%%"
+    repo:
+      default: "%%session.repo%%"
+    namespace:
+      default: axsys
+    version:
+      default: staging
+steps:
+  - checkout:
+      template: axscm-checkout
+  - platform-build:
+      template: platform-build-step
+      parameters:
+        checkout: "%%step.checkout%%"
+
+---
+type: policy
+name: "Platform build every minute"
+description: Trigger platoform build every minute
+template: platform-build-standalone
+parameters:
+  namespace: "platstress"
+  version: "test1"
+notifications:
+  -
+    when:
+      - on_change
+    whom:
+      - author
+when:
+  -
+    event: on_cron
+    target_branches:
+      - ".*"
+    schedule: "*/1 * * * *"
+    timezone: "US/Pacific"

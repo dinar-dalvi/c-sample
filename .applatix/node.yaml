@@ -1,0 +1,47 @@
+---
+type: service_template
+subtype: container
+name: node
+description: NodeJS 6.1 LTS
+container:
+  resources:
+    mem_mib: 2048
+    cpu_cores: 0.4
+  image: docker.local/node:6.1
+  docker_options: ''
+  command: "%%CMD%%"
+inputs:
+  artifacts:
+  - from: "%%service.checkout.code%%"
+    path: "/src"
+  parameters:
+    CMD: {}
+    checkout: {}
+outputs:
+  artifacts:
+    artifacts:
+      path: "/src"
+
+---
+type: service_template
+subtype: container
+name: node_6_3_1
+description: NodeJS 6.3.1
+container:
+  resources:
+    mem_mib: 2048
+    cpu_cores: 0.4
+  image: docker.local/node:6.3.1
+  docker_options: ''
+  command: "%%CMD%%"
+inputs:
+  artifacts:
+  - from: "%%service.checkout.code%%"
+    path: "/src"
+  parameters:
+    CMD: {}
+    checkout: {}
+outputs:
+  artifacts:
+    code:
+      path: "/src"
