@@ -5,8 +5,8 @@ name: axapproval
 description: Base step for axapproval container
 container:
   resources:
-    mem_mib: 1024
-    cpu_cores: 0.1
+    mem_mib: 128
+    cpu_cores: 0.01
   image: get.applatix.io/axapproval:v1
   command: sh -c 'axapproval --required_list "%%required_approvals%%"
     --optional_list "%%optional_approvals%%"
@@ -19,37 +19,3 @@ inputs:
     number_of_optional_approvals_needed:
     timeout_in_minutes:
 outputs:
-
-
----
-type: service_template
-subtype: workflow
-name: Applatix Approval
-description: This is the workflow for axapproval
-inputs:
-  parameters:
-    commit:
-      default: "%%session.commit%%"
-    repo:
-      default: "%%session.repo%%"
-    namespace:
-      default: axsys
-    version:
-      default: staging
-    required_approvals:
-      default: ""
-    optional_approvals:
-      default: " "
-    number_of_optional_approvals_needed:
-      default: "0"
-    timeout_in_minutes:
-      default: "0"
-steps:
-  - checkout:
-      template: axscm-checkout
-  - approval:
-      template: axapproval
-  - devops-test:
-      template: devops-unit-test-step
-      parameters:
-        checkout: "%%step.checkout%%"
