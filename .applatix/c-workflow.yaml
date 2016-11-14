@@ -19,6 +19,7 @@ steps:
 - test1:
     template: c-test
     parameters:
+      code: "%%steps.checkout.code%%"
       binary: "%%steps.build.binary%%"
   #test2:
    # template: c-test
