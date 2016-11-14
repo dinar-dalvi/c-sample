@@ -10,7 +10,7 @@ container:
     disk_gb: 10
   image: hub.docker.com/r/dinardalvi/alpine-c/
   docker_options: ''
-  command: "axscm clone %%repo%% /src --commit %%commit%%"
+  command: "alpine-c clone %%repo%% /src --commit %%commit%%"
 inputs:
   parameters:
     commit:
