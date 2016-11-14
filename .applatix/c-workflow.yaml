@@ -1,7 +1,7 @@
 ---
 type: service_template
 subtype: workflow
-name: example-workflow
+name: c-workflow
 description: workflow example
 inputs:
   parameters:
@@ -21,26 +21,26 @@ steps:
     parameters:
       code: "%%steps.checkout.code%%"
       binary: "%%steps.build.binary%%"
-  test2:
-    template: c-test
-    parameters:
-      code: "%%steps.checkout.code%%"
-      binary: "%%steps.build.binary%%"
-  test3:
-    template: c-test
-    parameters:
-      code: "%%steps.checkout.code%%"
-      binary: "%%steps.build.binary%%"
-  test4:
-    template: c-test
-    parameters:
-      code: "%%steps.checkout.code%%"
-      binary: "%%steps.build.binary%%"
-  test5:
-    template: c-test
-    parameters:
-      code: "%%steps.checkout.code%%"
-      binary: "%%steps.build.binary%%"
+  #test2:
+   # template: c-test
+    #parameters:
+     # code: "%%steps.checkout.code%%"
+      #binary: "%%steps.build.binary%%"
+  #test3:
+   # template: c-test
+    #parameters:
+     # code: "%%steps.checkout.code%%"
+      #binary: "%%steps.build.binary%%"
+  #test4:
+   # template: c-test
+    #parameters:
+     # code: "%%steps.checkout.code%%"
+      #binary: "%%steps.build.binary%%"
+  #test5:
+   # template: c-test
+    #parameters:
+     # code: "%%steps.checkout.code%%"
+      #binary: "%%steps.build.binary%%"
 #- release:
 #    template: example-release
 #    parameters:
