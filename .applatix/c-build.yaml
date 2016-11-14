@@ -8,7 +8,7 @@ container:
     mem_mib: 256
     cpu_cores: 0.1
     disk_gb: 0
-  image: "hub.docker.com/r/dinardalvi/alpine-c/"
+  image: "dinardalvi/alpine-c"
   docker_options: ""
   command: "sh -c 'cd /src && ls -ltr && gcc -o hello hello.c && sleep 5'"
 inputs:
