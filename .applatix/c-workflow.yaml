@@ -13,7 +13,7 @@ steps:
 - checkout:
     template: axscm-checkout
 - build:
-    template: example-build
+    template: c-build
     parameters:
       code: "%%steps.checkout.code%%"
 - test1:
