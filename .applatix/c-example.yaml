@@ -1,14 +1,14 @@
 ---
 type: service_template
 subtype: container
-name: golang-example-base
-description: golang example base container
+name: c-example-base
+description: c example base container
 container:
   resources:
     mem_mib: 256
     cpu_cores: 0.1
     disk_gb: 0
-  image: "golang:1.6"
+  image: "dinardalvi/alpine-c"
   docker_options: ""
   command: "%%CMD%%"
 inputs:
@@ -26,8 +26,8 @@ outputs:
 ---
 type: service_template
 subtype: workflow
-name: golang-example
-description: golang example workflow
+name: c-example
+description: c example workflow
 inputs:
   parameters:
     commit:
@@ -38,12 +38,14 @@ steps:
 - checkout:
     template: axscm-checkout
 - build:
-    template: golang-example-base
+    template: c-example-base
     parameters:
-      CMD: "sh -c 'cd /src && go build main.go'"
+      CMD: "gcc -o hello hello.c"
       checkout_service: "%%service.checkout.id%%"
   test:
-    template: golang-example-base
+    template: c-example-base
     parameters:
-      CMD: "sh -c 'cd /src && go test -v'"
+      CMD: "./hello"
       checkout_service: "%%service.checkout.id%%"
+#RUN 
+#
