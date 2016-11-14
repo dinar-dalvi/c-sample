@@ -20,4 +20,4 @@ inputs:
 outputs:
   artifacts:
     binary:
-      path: "/src/hello"
+      path: "/src"
