@@ -1,7 +1,7 @@
 ---
 type: service_template
 subtype: container
-name: example-test
+name: c-test
 description: test example
 container:
   resources:
