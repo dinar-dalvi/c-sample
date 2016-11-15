@@ -1,33 +1,8 @@
 ---
-type: service_template
-subtype: container
-name: c-example-base
-description: c example base container
-container:
-  resources:
-    mem_mib: 256
-    cpu_cores: 0.1
-    disk_gb: 0
-  image: "hub.docker.com/r/dinardalvi/alpine-c/"
-  docker_options: ""
-  command: "%%CMD%%"
-inputs:
-  artifacts:
-  - from: "%%service.checkout_service.code%%"
-    path: "/src"
-  parameters:
-    CMD:
-    checkout_service:
-outputs:
-  artifacts:
-    code:
-      path: "/src"
-
----
+name: C check and build
 type: service_template
 subtype: workflow
-name: c-example
-description: c example workflow
+description: c example workflow that does checkout and build
 inputs:
   parameters:
     commit:
@@ -38,14 +13,10 @@ steps:
 - checkout:
     template: axscm-checkout
 - build:
-    template: c-example-base
+    template: golang-example-base
     parameters:
-      CMD: "gcc -o hello hello.c"
-      checkout_service: "%%service.checkout.id%%"
-  test:
-    template: c-example-base
-    parameters:
-      CMD: "./hello"
-      checkout_service: "%%service.checkout.id%%"
-#RUN 
-#
+      CMD: "sh -c 'cd /src && go build main.go'"
+      code_artifact: "%%steps.checkout.code%%"
+labels:
+  release: 1.0.2
+  milestone: m6
