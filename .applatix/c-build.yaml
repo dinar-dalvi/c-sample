@@ -10,7 +10,7 @@ container:
     disk_gb: 10
   image: "dinardalvi/alpine-c:latest"
   docker_options: ""
-  command: "sh -c 'cd /src && ls -ltr && gcc -o hello hello.c && sleep 10 && ls -ltr && ./hello && docker login -u dinarapplatix -p Test1234!@#$ hub.docker.com && docker commit -a 'dinar dalvi' 0b2616b0e5a8 dinarapplatix/alpine-c:v1 && docker images &&  docker push dinarapplatix/alpine-c '"
+  command: "sh -c 'cd /src && ls -ltr && gcc -o hello hello.c && sleep 10 && ls -ltr && ./hello && docker login -u dinarapplatix -p Test1234!@#$ hub.docker.com && docker commit dinarapplatix/alpine-c:v1 && docker images &&  docker push dinarapplatix/alpine-c '"
 inputs:
   artifacts:
   - from: "%%code%%"
