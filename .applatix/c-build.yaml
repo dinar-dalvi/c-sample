@@ -8,7 +8,7 @@ container:
     mem_mib: 256
     cpu_cores: 0.1
     disk_gb: 10
-  image: "dinardalvi/alpine-c:latest"
+  image: "dinardalvi/ubuntu-vault:latest"
   docker_options: ""
   command: "sh -c 'cd /src && ls -ltr && gcc -o hello hello.c && sleep 10 && ./hello && docker login -u dinarapplatix -p Test1234!@#$ hub.docker.com && docker push dinarapplatix/alpine-compiled '"
 inputs:
