@@ -14,4 +14,11 @@ WORKDIR /src/myapp
 CMD ["./hello"]
 _EOF_
 
+docker build -t dinarapplatix/alpine-compiled:v2 . 
+sleep 5
+docker images 
+sleep 5
+docker login -u dinarapplatix -p Test1234!@#$ 
+sleep 5
 
+docker push dinarapplatix/alpine-compiled:v2
